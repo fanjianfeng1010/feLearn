@@ -1,0 +1,57 @@
+body{
+    background-color: #68cdd6;
+    margin: 0;
+    padding: 0;
+}
+.container{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.header{
+    height: 20%;
+}
+
+
+.body{
+    margin-top:15% ;
+    text-align: center;
+    color: white;
+
+}
+
+
+.txt{
+    margin: auto;
+    text-align: center;
+    font-size: 2rem;
+    color: white;
+
+}
+
+}
+.footer{
+    height: 30%;
+    margin-top: 20%;
+
+}
+
+p{
+    color: white;
+}
+
+.roung1{
+    margin-left: 2%;
+    float: left;
+    text-align: center;
+    display: inline-block;
+}
+
+.round2{
+    margin-right: 2%;
+    float: right;
+    text-align: center;
+    display: inline-block;
+}
