@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /* p:nth-child(odd) {
+            background-color: #FF11FF;
+        }
+        
+        p:nth-child(even) {
+            background-color: #0011FF;
+        } */
+        
+        .yellow {
+            background-color: yellow;
+        }
+        
+        .red {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="container">
+        <li>多行变色第一行</li>
+        <li>多行变色第一行</li>
+        <li>多行变色第一行</li>
+        <li>多行变色第一行</li>
+        <li>多行变色第一行</li>
+    </ul>
+    <script>
+        var ul = document.querySelector('#container')
+        var li = ul.children
+        for (var i = 0; i < li.length; i++) {
+            if (i % 2 === 0) {
+                // li[i].style.backgroundColor = 'red'
+                li[i].classList.add('yellow')
+            } else {
+                // li[i].style.backgroundColor = 'yellow'
+                li[i].classList.add('red')
+            }
+        }
+        console.log(li)
+    </script>
+</body>
+
+</html>
