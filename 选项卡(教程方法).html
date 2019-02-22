@@ -75,11 +75,29 @@
                     console.log(e.target, e.currentTarget)
                     changeTab(e.target.myIndex)
                 })
-                // tabList[i].onclick = function() {
-                //     console.log(this)
-                //     changeTab(this.myIndex)
-                // }
+                //         // tabList[i].onclick = function() {
+                //         //     console.log(this)
+                //         //     changeTab(this.myIndex)
+                //         // }
         }
+        //     // 另外的方法一 
+        // for (var i = 0; i < tabList.length; i++) {
+        //     tabList[i].onclick = function(i) {
+        //         return function(i) {
+        //             changeTab(i)
+        //         }
+        //     }(i)
+        // }
+
+        // // 另外的方法二
+        // for (var i = 0; i < tabList.length; i++) {
+        //     ~ function(i) {
+        //         tabList[i].onclick = function() {
+        //             changeTab(i)
+        //         }
+        //     }(i)
+        // }
+
         changeTab = (n) => {
             // n:当执行这个方法的时候，会把当前点击的这个li的索引传递过来
             // =>1.让所有的样式都没有选中样式
@@ -95,3 +113,6 @@
 </body>
 
 </html>
+
+<!-- 1 思考使用其他方法实现选项卡 -->
+<!-- 1 隔三行变色，并且基于JS实现出鼠标滑过高亮显示，鼠标离开回归原有样式 -->
