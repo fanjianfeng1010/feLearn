@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="reset.min.css">
+    <style>
+        .tabBox {
+            margin: 20px auto;
+            width: 500px;
+        }
+        
+        .tabBox ul {
+            position: relative;
+            top: 1px;
+        }
+        
+        .tabBox ul li {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 0 10px;
+            line-height: 33px;
+            /* 一共是35像素，上下边框各一像素*/
+            border: 1px solid #AAA;
+            cursor: pointer;
+        }
+        
+        .tabBox ul li.active {
+            font-weight: 100;
+            color: lightcoral;
+            border-bottom-color: #FFF;
+            /* 让当前LI的边框覆盖DIV的边框，
+            我们让LI的下边框是背景颜色，这样看上去就就像没边框了*/
+        }
+        
+        .tabBox div {
+            display: none;
+            line-height: 148px;
+            text-align: center;
+            border: 1px solid #AAA;
+        }
+        
+        .tabBox div.active {
+            display: block
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tabBox" id="taBox">
+        <ul>
+            <li class="active">新闻</li>
+            <li>电影</li>
+            <li>音乐</li>
+        </ul>
+        <div class="active">这是一段好长好长的新闻啊一</div>
+        <div>这是一段好长好长的新闻啊二</div>
+        <div>这是一段好长好长的新闻啊三</div>
+    </div>
+    <script>
+        /*
+         *【思路】
+         * 1.给所有li绑定点击事件，当点击任何一个li的时候，都做第二部操作
+         * 2.可以现让所有的li和div的class都为空，再让点击这个li和对应的div有active这个class
+         */
+        var tabBox = document.querySelector('#taBox')
+        var tabList = tabBox.querySelectorAll('li')
+        var divList = tabBox.querySelectorAll('div')
+        for (var i = 0; i < tabList.length; i++) {
+            tabList[i]['myIndex'] = i
+            tabList[i].addEventListener('click', (e) => {
+                    console.log(e.target, e.currentTarget)
+                    changeTab(e.target.myIndex)
+                })
+                // tabList[i].onclick = function() {
+                //     console.log(this)
+                //     changeTab(this.myIndex)
+                // }
+        }
+        changeTab = (n) => {
+            // n:当执行这个方法的时候，会把当前点击的这个li的索引传递过来
+            // =>1.让所有的样式都没有选中样式
+            for (var i = 0; i < tabList.length; i++) {
+                tabList[i].className = ''
+                divList[i].className = ''
+            }
+            // =>2.当前的点击有选中样式
+            tabList[n].className = 'active'
+            divList[n].className = 'active'
+        }
+    </script>
+</body>
+
+</html>

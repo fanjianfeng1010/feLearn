@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container {
+            position: relative;
+        }
+        
+        span {
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+        }
+        
+        .box {
+            border: 1px solid black;
+            width: 500px;
+            height: 200px;
+        }
+        
+        #reading {
+            position: absolute;
+            background-color: red;
+        }
+        
+        #movie {
+            position: absolute;
+            background-color: yellow;
+        }
+        
+        #music {
+            position: absolute;
+            background-color: blue;
+        }
+        
+        .active {
+            visibility: visible;
+        }
+        
+        .none-active {
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <span id="btn-reading">读书</span>
+        <span id="btn-music">音乐</span>
+        <span id="btn-movie">电影</span>
+    </div>
+    <div id="reading" class="box none-active">
+        热爱读书
+    </div>
+    <div id="movie" class="box none-active">
+        热爱电影
+    </div>
+    <div id="music" class="box none-active">
+        热爱音乐
+    </div>
+    <script>
+        var qs = (el) => {
+            return document.querySelector(el)
+        }
+        var log = console.log.bind(console)
+        var container = qs('.container')
+        container.addEventListener('click', (event) => {
+            var target = event.target
+            log(typeof target.id)
+            var mo = qs('#movie')
+            var re = qs('#reading')
+            var mu = qs('#music')
+            console.log(target)
+            if (target.id === 'btn-reading') {
+                hideOrShow(re)
+            } else if (target.id === 'music') {
+                hideOrShow(mu)
+            } else if (target.id === 'movie') {
+                hideOrShow(mo)
+            }
+
+        })
+        let hideOrShow = (el) => {
+            if (!el.classList.contains('active')) {
+                el.classList.remove('none-active')
+                el.classList.add('active')
+            }
+        }
+    </script>
+</body>
+
+</html>
