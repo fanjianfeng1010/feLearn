@@ -346,3 +346,44 @@ for (var i = 0; i < arr.length; i++) {
   obj[key] = value
 }
 ```
+
+### JS 中的数学函数 Math
+
+Math 成为数学函数，但是他属于对象类型
+
+```javascript
+  typeof Math => "object"
+```
+
+之所以叫做数学函数，是因为 Math 这个对象提供了很多操作数字的方法
+
+### Math 中提供的常用方法
+
+**`abs`**
+作用:取绝对值
+
+**`ceil/floor`**
+作用:向下/向上取整
+
+```javascript
+Math.ceil(10.01); // => 11
+Math.floor(10.999); // => 10
+```
+
+**`round`**
+作用：四舍五入取整
+
+**`sqrt`**
+作用:开平方
+
+**`pow`**
+作用：取幂
+
+**`max/min`**
+作用:获取最大/最小值
+
+**`random`**
+作用：获取 0~1 之间的随机数
+
+**`Math.round(Math.random() * (m-n) + n)`**
+作用：获取 n-m 之间的随机数

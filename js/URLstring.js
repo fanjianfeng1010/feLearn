@@ -38,33 +38,7 @@ for (var i = 0; i < arr.length; i++) {
 }
 console.log(obj)
 
-提高眼界:
-  7.
-8.
-9.
-10.
-11.
-12.
-13.
-14.
-15.
-16.
-17.
-18.
-19.
-20.
-21.
-22.
-23.
-24.
-25.
-26.
-27.
-28.
-29.
-30.
-31.
-32.
+
 var str = 'http://www.zhufengpeixun.cn/stu/?lx=1&n ame=AA&sex=man#teacher'; //=>#后面的称为哈希(HAS H)值,这个值可能有可能没有,我们需要处理,有的话我们截取的时候 需要过滤掉
 //=>获取问号和井号在字符串中索引位置 var indexASK = str.indexOf('?'),
 indexWell = str.indexOf('#'); //=>#可能有可能没有
