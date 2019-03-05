@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // var a = 12
+    // if (true) {
+    //   console.log(a)
+    //   let a = 1
+    // } // Uncaught ReferenceError: a is not defined
+    var a = 12
+    var b = 12
+    var c = 14
+
+    function fn(a) {
+      console.log(a, b, c) // => 个人预测 12.undefined,undefined
+      // => 实际 12，undefined 14，原因猜想，最后的14因为没有用var 声明，他是全局变量，因为在全局中有同名变量，值是14，所以输出14
+      var b = c = 20
+      console.log(a, b, c) // => 个人预测，12，20，20
+    }
+    fn(a)
+  </script>
+</body>
+
+</html>

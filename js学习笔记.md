@@ -396,3 +396,72 @@ Math.floor(10.999); // => 10
 2.保护里面的私有变量不瘦外界的干扰（和外界是隔离的）
  我们把函数执行的这种保护机制称为‘闭包’
 ```
+
+### DOM 树
+
+> dom tree
+> 当浏览器加载 HTML 页面的时候，首先就是 DOM 结构的计算，计算出来的 DOM 结构就是 DOM 树（把页面中的 HTML 标签像树状结构一样，分析出之间的层级关系）
+
+DOM 树描述了节点间的关系，我们只要知道任何一个标签，都可以依据 DOM 中提供的属性和方法，获取到页面中任意一个标签或者节点
+
+###JS 中获取 DOM 元素的方法
+**`getElementById`**
+1.getElementById 的上下文只能是 document
+
+> 因为在严格意义上，一个页面中的 ID 是不能重复的，浏览器规定在整个文档中只可以获取这个唯一的 ID
+
+2.如果页面 ID 重复了，我们基于这个方法只能获取到第一个元素，后面相同 ID 元素无法获取
+
+3.在 IE6-IE7 浏览器中，表单元素的 name 属性会被当成 ID 属性来使用（使用表单元素时，不要让 name 和 id 的值有冲突）
+
+**`getELementsByTagName`**
+`[context].getElementsByTagName`
+在指定的上下文中，根据标签名获取一组元素集合（HTMLCollection） 1.获取的元素是一个类数组，不能直接使用数组方法 2.它会把当前上下文中，子子孙孙（后代）层级内的标签都获取到 3.基于这个方法获取到的结果永远是一个集合，操作具体的某一项，需要基于索引获取才可以
+
+**`getElementsByClassName`**
+`[context].getElementsByClassName`在指定上下文中，基于元素的样式类名获取到一组元素集合 1.在真实项目中，我们经常是基于样式类来给元素设置样式，所以在 JS 中，我们也经常基于样式来获取元素，但此方法在 IE6-8 中不兼容
+兼容处理方案参考：
+
+```javascript
+Node.prototype.queryElementsByClassName = function queryElementsByClassName() {
+  if (arguments.length === 0) return [];
+  var strClass = arguments[0],
+    nodeList = utils.toArray(this.getElementsByTagName("*"));
+  strClass = strClass.replace(/^ +| +$/g, "").split(/ +/);
+  for (var i = 0; i < strClass.length; i++) {
+    var reg = new RegExp("(^| +)" + strClass[i] + "( +|$)");
+    for (var k = 0; k < nodeList.length; k++) {
+      if (!reg.test(nodeList[k].className)) {
+        nodeList.splice(k, 1);
+        k--;
+      }
+    }
+  }
+  return nodeList;
+};
+```
+
+**`getElementsByName`** 1.上下文只能是 document，在整个文档中，基于元素 name 属性获取一组节点集合 2.在 IE 浏览器中（IE9 及以下版本），只对表单元素的 name 属性器作用，（正常来说，我们项目中只会给表单元素设置 name，给非表单元素设置 name 其实是一个不太符合规范的操作）
+
+**`querySelecotr`**
+`[context].querySelector()` 在指定上下文中，基于选择器（类似 CSS 选择器）获取到指定的元素对象，（获取的是一个元素，哪怕选择器匹配了多个，也只获取到第一个）
+
+**`querySelecotrAll`**
+
+> 在 querySelector 的基础上，获取到选择器匹配的所有元素，结果一一个节点集合（nodeList）
+
+1. querySelecotrAll/querySelecotr 都是不兼容 IE6-8（在不考虑兼容的情况下，我们能用 byId 或者其他方法获取的，也尽量不要用这两个方法，这两个方法性能消耗较大）
+
+**`document.head`**
+获取 HEAD 元素对象
+**`document.body`**
+获取 BODY 元素对象
+**`document.documentElement`**
+获取 HTML 元素对象
+
+```javascript
+// => 需求：获取浏览器一屏幕宽度和高度（兼容所有的浏览器）
+document.documentElement.clientWidth || document.body.clientWidth;
+
+document.documentElement.clientHeight || document.body.clientHeight;
+```
