@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/reset.min.css">
+  <style>
+    .tabBox {
+      margin: 20px auto;
+      width: 500px;
+    }
+
+    .tabBox ul {
+      position: relative;
+      top: 1px;
+    }
+
+    .tabBox ul li {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 0 10px;
+      line-height: 33px;
+      /* 一共是35像素，上下边框各一像素*/
+      border: 1px solid #AAA;
+      cursor: pointer;
+    }
+
+    .tabBox ul li.active {
+      font-weight: 100;
+      color: lightcoral;
+      border-bottom-color: #FFF;
+      /* 让当前LI的边框覆盖DIV的边框，
+            我们让LI的下边框是背景颜色，这样看上去就就像没边框了*/
+    }
+
+    .tabBox div {
+      display: none;
+      line-height: 148px;
+      text-align: center;
+      border: 1px solid #AAA;
+    }
+
+    .tabBox div.active {
+      display: block
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tabBox" id="taBox">
+    <ul>
+      <li class="active">新闻</li>
+      <li>电影</li>
+      <li>音乐</li>
+    </ul>
+    <div class="active">新闻</div>
+    <div>电影</div>
+    <div>音乐</div>
+  </div>
+  <script>
+    var tabBox = document.querySelector('#taBox')
+    var tabList = tabBox.querySelectorAll('li')
+    var divList = tabBox.querySelectorAll('div')
+    /*
+    for (var i = 0; i < tabList.length; i++) {
+      tabList[i].onclick = function () {
+        
+           changeTab(i)
+           这样做不行的原因是因为网页载入的时候，网页已经加载完成（页面加载完成预示着
+           JS代码已经执行完成，即循环也已经结束了）
+           当点击的时候，循环已经结束了，i此时等于3
+           =》执行方法，形成一个私有栈内存，遇到变量i，i不是私有变量，向上一级
+           作用域查找(上级作用域为window)
+           =>所有事件绑定都是异步编程,绑定事件之后，不需要等待执行，
+           继续执行下一个循环任务，所以当我们点击执行方法的时候，循环早已结束
+        
+      }*/
+
+    /* 解决方案一，自定义属性
+        for (var i = 0; i < tabList.length; i++) {
+          tabList[i].myIndex = i
+          tabList[i].onclick = function () {
+            changeTab(this.myIndex)
+          }
+        }
+    */
+
+    /*
+    //解决方案二，闭包,这方案不好，因为行程了太多的不销毁的私有作用域
+    for (var i = 0; i < tabList.length; i++) {
+      tabList[i].onclick = (function (n) {
+        // 让自执行函数执行，把执行的返回值赋值给onlick,此处onlick绑定的是返回的小函数
+        // 自执行函数给事件赋值的时候已经执行了
+        var i = n
+        return function () {
+          changeTab(i)
+        }
+      })(i)
+    }
+    */
+    /*
+     // 闭包二
+     for (var i = 0; i < tabList.length; i++) {
+       (function (n) {
+         tabList[n].onclick = function () {
+           changeTab(n)
+         }
+       })(i)
+     }
+     */
+    /* 解决方案三 ES6语法
+    for(let i = 0; i < tabList.length; i++ ) {
+      changeTab(i)
+    }
+    循环体也是块级作用域，初始值设置的变量是本次块级作用域的变量
+    （形成了多个块级作用域，每个块级作用域都有一个私有变量i，变量值
+    就是每一次循环i的值）
+    */
+    function changeTab(curIndex) {
+      for (var i = 0; i < tabList.length; i++) {
+        tabList[i].className = ''
+        divList[i].className = ''
+      }
+      tabList[curIndex].className = 'active'
+      divList[curIndex].className = 'active'
+    }
+  </script>
+</body>
+
+</html>
+
+<!-- 1 思考使用其他方法实现选项卡 -->
+<!-- 1 隔三行变色，并且基于JS实现出鼠标滑过高亮显示，鼠标离开回归原有样式 -->
