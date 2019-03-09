@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //   1、
+
+    console.log(a); // undefined
+    var a = 12;
+
+    function fn() {
+      console.log(a); // undefined
+      var a = 13;
+    }
+    fn();
+    console.log(a); // 12
+
+    /*
+     A、undefined  12 13             
+     B、undefined undefined 12   
+     C、undefined undefined 13         
+     D、有程序报错
+    */
+    //    2、
+
+    console.log(a); // undefined
+    var a = 12;
+
+    function fn() {
+      console.log(a); // 12
+      a = 13;
+    }
+    fn();
+    console.log(a); // 13
+
+    /*
+     A、undefined  12 13             
+     B、undefined undefined 12   
+     C、undefined undefined 13         
+     D、有程序报错
+    */
+    //    3、
+
+    console.log(a); // 报错
+    a = 12;
+
+    function fn() {
+      console.log(a);
+      a = 13;
+    }
+    fn();
+    console.log(a);
+
+    /*
+     A、undefined  12 13             
+     B、undefined undefined 12   
+     C、undefined undefined 13         
+     D、有程序报错
+    */
+    //    4、
+
+    var foo = 1;
+
+    function bar() {
+      if (!foo) {
+        var foo = 10;
+      }
+      console.log(foo);
+    }
+    bar();
+    /*
+        第一步 全局作用域中变量提升 var foo, function bar  = AAAFFF000
+        第二步 代码从上到下执行  foo = 1 进入函数bar
+          1. 变量提升 var foo 
+          2. => foo => undefined => !foo true => foo = 10
+          3. 输出 10
+    */
+    /*
+     A、1     
+     B、10     
+     C、undefined    
+     D、报错
+    */
+    //    5、
+
+    /*
+      1. 变量提升， var n, function a = 'AAAFFF111', var c,
+      2. 代码从上而下执行
+        2.1）n = 0, c = a()
+        2.2) a(): 
+          2.2.1) 变量提升 var n , function b = BBBFFF000
+          2.2.2) 代码自上而下执行， n =10 ,b()
+            2.2.2.1) 没有变量提升， b()里面没有n这个变量，向上级作用域查找，n = 10, => n++ = 11
+          2.2.3) 返回b
+        2.3) c()
+          2.3.1) 代码自上而下执行，n++,私有作用域没有 n,像上级作用域查找，上级n = 10, n++ => 因为C有对a的引用，a里面的私有作用域没有销毁，此时n = 11,则n++ = 12
+        2.4 全局作用域下 n = 0, 最后输出结果为 11 12 0
+    */
+    var n = 0;
+
+    function a() {
+      var n = 10;
+
+      function b() {
+        n++;
+        console.log(n);
+      }
+      b();
+      return b;
+    }
+    var c = a();
+    c();
+    console.log(n);
+
+
+    /*
+     A、1 1 1   
+     B、11 11 0  
+     C、11 12 0  
+     D、11 12 12
+    */
+    //    6、
+
+
+    /*
+     * 1，变量提升，var a,var b, var c, function test = 'AAAFFF333'
+     * 2,代码自上而下执行， a=10,b=11,c=12,test()
+     *   2.1, 变量提升，var b, 形参赋值，=》 此时test函数里面的 a,b 都为局部变量
+     *   2.2， 代码自上而下执行，a = 1, b = 2, c = 3 => c没有用var 定义，则是全局变量
+     * 最后输出结果为， 10， 11，3
+     */
+    var a = 10,
+      b = 11,
+      c = 12;
+
+    function test(a) {
+      a = 1;
+      var b = 2;
+      c = 3;
+    }
+    test(10);
+    console.log(a);
+    console.log(b);
+    console.log(c);
+
+    /*
+     A、1 11 3   
+     B、10 11 12  
+     C、1 2 3   
+     D、10 11 3
+    */
+    //    7、
+
+    /*
+     * 1，在全局作用域下，变量提升（在老式浏览器中，不管条件判断语句是否成立，都会变量提升）var a => undefined
+     * 2,代码自上而下执行， 因为有变量提升，全局作用域中 a 存在 =》 (a in window) => true => !(a in window) => false,所以a不会被赋值，所以a的值是undefined
+     * 
+     */
+    if (!("a" in window)) {
+      var a = 1;
+    }
+    console.log(a);
+
+    /*
+     A、1   
+     B、undefined   
+     C、报错   
+     D、以上答案都不对
+    */
+    //    8、
+
+    /*
+     *  1.全局作用域中，变量提升，var a, function b = 'AAABBB000'
+     *  2.代码自上而下执行， a = 4, a=b(1,2,3)
+     *    2.1) 因为没有变量或函数声明语句，不存在变量提升
+     *    2.2） 形参赋值，=> x,y,a 都为局部变量， => x=1,y=2,a=3
+     *    2.3) 代码自上而下执行， => 输出a = 3, argments[2] = 10 => 局部变量a = 10, =>输出 a = 10
+     *    2.4) 由于函数没有返回语句，=> 全局作用域下 a = undefined  
+     *  最后执行结果为 , 3, 10, undefined
+     */
+    var a = 4;
+
+    function b(x, y, a) {
+      console.log(a);
+      arguments[2] = 10;
+      console.log(a);
+    }
+    a = b(1, 2, 3);
+    console.log(a);
+
+    /*
+     A、3  3  4   
+     B、3  10  4   
+     C、3  10  10   
+     D、3  10  undefined
+    */
+    //   9、
+    /*
+     * 1.全局作用域中，变量提升，var foo,
+     * 2.代码自上而下执行 => foo = 'hello', 进入自执行函数
+     *   2.1） 变量提升，var foo, 形参赋值， foo = 'hello' => 则在自执行函数的私有作用域中，foo是私有变量
+     *   2.2) 代码自上而下执行，输出 'hello', 因为foo已经存在，所以 foo = 'hello',输出 ’hello‘
+     *   2.3）函数执行结束，回到全局作用域中，全局变量foo=’hell0‘
+     * 3. 所以最后执行结果为 'hello','hello','hello'
+     *
+     * 
+     */
+    var foo = 'hello';
+    (function (foo) {
+      console.log(foo);
+      var foo = foo || 'world';
+      console.log(foo);
+    })(foo);
+    console.log(foo);
+
+    /*
+     A、hello hello hello   
+     B、undefined world  hello   
+     C、hello world world   
+     D、以上答案都不正确
+    */
+    //    10、
+
+    /*
+     * 1.变量提升，var a, function fn = 'AAAFFF444', var f
+     * 2.代码自上而下执行，a = 9, f = fn()
+     *   2.1) 不存在变量提升，
+     *   2.2） 代码自上而下执行，在fn中不存在变量声明，所以 a 是全局变量 a = 0
+     *     2.2.1）返回函数字符串 '{ return b+ a++}'
+     *   2.3) f(5): =>建立新的私有作用域， 形参赋值，b = 5, 由于私有作用域没有a的变量声明，所以a是全局变量 a = 0, 输出 即 b + a++ => 5 + 0, => 之后全局变量 a = 1
+     *   2.4) fn()(5): 
+     *    2.4.1) 先执行fn() => 没有变量声明，代码自上而下执行， 所以全局变量 a = 0;
+     *    2.4.2) 执行 fn()(5) => 形参赋值，b = 5,建立新的私有作用域，返回 b + a++ ， 即 5 + 0, => 之后全局变量 a = 1
+     *   2.5) f(5):建立新的私有作用域，形参赋值，b= 5,由于私有作用域没有a的变量声明，所以a是全局变量 a = 1, 输出 即 b + a++ => 5 + 1, => 之后全局变量 a = 2
+     *   2.6) 输出全局变量a的值，=> a = 2
+     * 3.最后的结果为 5,5,6,2
+     *
+     * 
+     */
+    var a = 9;
+
+    function fn() {
+      a = 0;
+      return function (b) {
+        return b + a++;
+      }
+    }
+    var f = fn();
+    console.log(f(5));
+    console.log(fn()(5));
+    console.log(f(5));
+    console.log(a);
+
+    /*
+     A、6 6 7 2   
+     B、5 6 7 3   
+     C、5 5 6 3   
+     D、以上答案都不正确 
+    */
+    //    二、 问答题（ 需要画图）
+    //    1、
+
+    /*
+     * 1.全局作用域中，变量提升，var ary, function fn = 'AAAFFF555',var res,
+     * 2.代码自上而下执行，ary = [1,2,3,4], res = fn(ary)
+     *   2.1) 进入私有作用域fn中，没有变量声明，
+     *   2.2） 形参赋值，此时 ary 就是局部变量，与 全局变量 ary 拥有同一个内存地址 ‘BBBFFF111’
+     *   2.3） 代码自上而下执行， 
+     *     2.3.1）ary[0] = 0 => 内存地址‘BBBFFF111’所保存的数组首索引的值 变为 0，
+     *     2.3.2）ary = [0], 局部变量ary 断开与地址‘BBBFFF111’的链接，指向新的内存地址‘CCCFFF000’，保存着[0]
+     *     2.3.3) ary[0] = 100, 局部变量 ary的地址‘CCCFFF000’首索引保存的值变为 100
+     *     2.3.4） 返回 局部变量 ary => 'CCCFFF000'
+     *   2.4) 输出全局变量ary,即 地址‘BBBFFF111’所保存数组的值，=> [0,2,3,4]
+     *   2.5) 输出全局变量res,即地址‘CCCFFF000’所保存的值， => [100]
+     * 
+     */
+    var ary = [1, 2, 3, 4];
+
+    function fn(ary) {
+      ary[0] = 0;
+      ary = [0];
+      ary[0] = 100;
+      return ary;
+    }
+    var res = fn(ary);
+    console.log(ary);
+    console.log(res);
+
+
+    //    2、
+    /*
+     * 1.全局作用域中，变量提升，function fn(i) = 'AAAFFF666',var f
+     * 2.代码自上而下执行， f = fn(10)
+     *   2.1) 私有作用域函数fn中，形参赋值，i = 10, 返回匿名函数
+     * 3.进入函数f(20)
+     *   3.1) 创建新的私有作用域，形参赋值，n = 20, 私有作用域中没有变量i的声明，所以像上级作用域查找，i = 10, 函数执行结果，输出 20 + 10， 最后 i的值++ => i= 11
+     *   3.2) 全局作用域中，存在 f 对 fn(10)的引用，私有作用域不销毁
+     * 4.执行fn(20)(40)
+     *  4.1) 创建新的私有作用域，形参赋值，i = 20,返回匿名函数
+     *    4.1.1) 建立新的私有作用域，形参赋值，n = 40,
+     *  4.2) 输出 n + i++ => 40 + 20 => 60, 最后 i++ => i =21 
+     *  4.3) 函数执行完毕，外部没有对函数的引用，私有作用域销毁
+     * 5.执行fn(30)(50)
+     *  5.1) 建立新的私有作用域，形参赋值，i=30,返回匿名函数
+     *    5.1.1）建立新的私有作用域，形参赋值，n=50,
+     *  5.2) 输出 n + i++ => 50 + 30 => 80, 最后 i++ => i = 31
+     *  5.3） 函数执行完毕，外部没有对函数的引用，私有作用域销毁
+     * 6. 执行f(30)
+     *  6.1）创建新的私有作用域，形参赋值，n = 30,私有作用域中不存在变量i的声明，向上级作用域中查找，由于存在f对fn的引用，上面创建的私有作用域中的 i的值没销毁，即 i = 11
+     *  6.2)  输出 n + i++ => 30 + 11 => 41, 最后 i++ => i = 12
+     * 7. 最后输出结果为，30，60，80，41
+     */
+    function fn(i) {
+      return function (n) {
+        console.log(n + (i++));
+      }
+    }
+    var f = fn(10);
+    f(20);
+    fn(20)(40);
+    fn(30)(50);
+    f(30);
+
+
+    //   3、
+    /*
+     * 1. 全局作用域中，变量提升，var i, function fn = 'AAAFFF777',var f
+     * 2. 代码自上而下执行，i = 10, f=fn()
+     *   2.1) 执行fn()
+     *     2.1.1) 返回 匿名函数的地址 'BBBFFF000'
+     *   2.2) f = ’BBBFFF000‘
+     *   2.3） 执行f(20)
+     *    2.3.1) 建立私有作用域，形参赋值，n = 20,
+     *    2.3.2) 代码自上而下执行,私有作用域中，不存在变量 i的声明，向上级作用域查找，最后找到全局作用域中存在i, 执行++i,即全局作用域中 i =11,
+     *    2.3.3) 输出 n + (++i) => 20 + 11 => 31
+     *    2.3.4) 外部不存在对函数的引用，私有作用域销毁
+     *   2.4) 执行fn()(20)
+     *    2.4.1) 执行fn()，建立私有作用域，返回匿名函数
+     *    2.4.2）建立私有作用域，形参赋值，n = 20,
+     *    2.4.3) 在上一步建立的私有作用域中，代码自上而下执行，私有作用域中，不存在变量 i的声明，向上级作用域查找，最后找到全局作用域中存在i, 执行++i,即全局作用域中 i =12,
+     *    2.4.4) 输出 n + (++i) => 20 + 12 => 32
+     *   2.5) 执行 fn()(30)
+     *    2.5.1) 执行fn(),建立新的私有作用域，返回匿名函数
+     *    2.5.2）执行fn()(30),建立新的私有作用域，形参赋值 形参赋值，n = 30，
+     *    2.5.3) 在上一步建立的私有作用域中，代码自上而下执行，私有作用域中，不存在变量 i的声明，向上级作用域查找，最后找到全局作用域中存在i, 执行++i,即全局作用域中 i =13,
+     *    2.5.4） 输出 n + (++i) => 30 + 13 => 43
+     *   2.6) 执行 f(30)
+     *    2.6.1）建立私有作用域，形参赋值，n = 30
+     *    2.6.2) 代码自上而下执行，在上一步建立的私有作用域中，不存在变量 i的声明，向上级作用域查找，最后找到全局作用域中存在i, 执行++i,即全局作用域中 i =14，
+     *    2.6.3） 输出 n + (++i) => 30 + 14 = > 44
+     *  3.最后输出结果为，31，32，43，44
+     */
+    var i = 10;
+
+    function fn() {
+      return function (n) {
+        console.log(n + (++i));
+      }
+    }
+    var f = fn();
+    f(20);
+    fn()(20);
+    fn()(30);
+    f(30);
+
+
+    //  4、
+    /*
+     * 1.全局作用域中，变量提升，var num, var obj = 'AAAFFF888',var fn
+     * 2.代码自上而下执行，num = 10, obj.fn = 自执行函数的返回值’BBBFFF333‘
+     *   2.1) 进入自执行函数中，建立私有作用域
+     *    2.1.1）不存在变量声明，形参赋值，私有变量num = obj.num => num = 20
+     *    2.1.2) 代码自上而下执行
+     *      2.1.2.1) this.num = num * 3, 这时候的this指向window，=> window.num = 20 * 3 
+     *      2.1.2.2) num++ => 20++ => num = 21
+     *   2.2) 返回 匿名函数的地址，因为存在引用，私有作用域不销毁
+     *   2.3) 执行 fn(5)
+     *    2.3.1) 建立新的私有作用域，不存在变量声明，所以没有变量提升，
+     *    2.3.2）形参赋值，n = 5,
+     *    2.3.3) 代码自上而下执行，
+     *      2.3.3.1) this.num += 5, 此时的this指向window => window.num += 5 => 60 + 5  => window.num > 65
+     *      2.3.3.2) num++, 私有作用域中不存在num的声明，向上级作用域中查找，找到上一级的私有作用域中存在num=>21 => ++ 后 => num = 22
+     *      2.3.3.3) 输出num的值，22
+     *   2.4） 执行obj.fn(10)
+     *    2.4.1)建立新的私有作用域，形参赋值，n = 10,
+     *    2.4.2) 代码自上而下执行
+     *      2.4.2.1） this.num += n, 此时的this 指向 obj => obj.mum +=n => 20 + 10 => 30
+     *      2.4.2.2) num++,当前私有作用域中不存在变量num的声明，向上级作用域查找，上级作用域中存在形参num,即上级私有作用域中存在num,此时num的值为23 => num = 23
+     *      2.4.2.3) 输出num的结果 21
+     *   2.5） 执行console.log(num,obj.num) => 即输出window.num => 65, obj.num => 30
+     *    
+     *      
+     *
+     * 
+     */
+    var num = 10;
+    var obj = {
+      num: 20
+    };
+    obj.fn = (function (num) {
+      this.num = num * 3;
+      num++;
+      return function (n) {
+        this.num += n;
+        num++;
+        console.log(num);
+      }
+    })(obj.num);
+    var fn = obj.fn;
+    fn(5);
+    obj.fn(10);
+    console.log(num, obj.num);
+
+
+    //   5、
+    /*
+     * 1.全局作用域中，变量提升，Fn = 'AAAFFF999',var f1,vaf f2
+     * 2.代码自上而下执行
+     *   2.1）f1 = new Fn
+     *   2.2) f2 = new Fn
+     *   2.3) console.log(fgetX === fgetX)
+     *
+     * 
+     */
+
+
+    /* 1 和new Number(1)  
+     *  区别 ：
+     *   前面一个是基本数据类型
+     *   后面一个是引用数据类型
+     *  相同点：
+     *   都是Number这个类的一个实例
+     * */
+
+    /*
+     * 函数类型：
+     * 1.普通函数
+     * 2.构造函数
+     * 对象类型：
+     * 1.普通对象
+     * 2.Math\JSON...
+     * 3.类的实例（数组，正则，日期）
+     * 4.prototype 或者 _proto_
+     * 5.argments或者元素集合等类数组
+     * 6.函数也是一种对象
+     * => 万物皆对象
+     * */
+
+    /*
+     *  1.每一个函数都有一个prototype属性，属性值是一个对象，这个对象中存储了当前类供实例调取使用的共有属性和方法
+     *  2.浏览器默认个原型开辟的堆内存中有一个属性constructor，存储的是当前类本身
+     *  3. 每一个对象（实例）都有一个_proto__(原型链)属性，这个属性指向当前实例所属类的原型（不确定所属的类，都指向Object.prototype）
+     **/
+    function Fn() {
+      this.x = 100;
+      this.y = 200;
+      this.getX = function () {
+        console.log(this.x);
+      }
+    }
+    Fn.prototype.getX = function () {
+      console.log(this.x);
+    };
+    Fn.prototype.getY = function () {
+      console.log(this.y);
+    };
+    var f1 = new Fn;
+    var f2 = new Fn;
+    console.log(f1.getX === f2.getX); // false 因为getX是两个实例本身具有的方法，位于不同的堆内存中
+    console.log(f1.getY === f2.getY); // true  因为getY这个方法在Fn的构造函数中不存在，处于原型链中，两个实例共享同一个原型链，所有相等
+    console.log(f1.__proto__.getY === Fn.prototype.getY); // true 共享原型链的方法
+    console.log(f1.__proto__.getX === f2.getX); // false f1的原型链中的getX方法和f2构造函数中的方法不相等
+    console.log(f1.getX === Fn.prototype.getX); // false f1的getX方法位于实例中，Fn的getX方法位于原型链中 
+    console.log(f1.constructor); // 返回Fn的构造函数字符串
+    console.log(Fn.prototype.__proto__.constructor); // Fn原型的原型链上的构造函数都是Object
+    f1.getX(); // 100
+    f1.__proto__.getX();
+    f2.getY(); // 200
+    Fn.prototype.getY();
+    /*
+        三：附加思考题（面试题）
+    1、以下代码的功能是要实现为5个input按钮循环绑定click点击事件，绑定完成后点击1、2、3、4、5五个按钮分别会alert输出0、1、2、3、4五个字符。（腾讯）
+
+    请问如下代码是否能实现？ // 不能实现
+    如果不能实现那么现在的效果是什么样的？ // 点击每个按钮都弹出5
+    应该做怎样的修改才能达到我们想要的效果，并说明原理？
+    // 可以使用es6语法，for循环内部使用let 声明变量，原理是使用let声明变量，
+    // 建立了块级作用域
+    也可以使用闭包，因为在页面载入时，js代码已经执行完毕了，此时for循环内的i的值是5
+    当点击事件发生时，i一直是5，弹出的提示也是5，这种情况下，使用闭包可以解决这个问题
+    因为闭包建立了局部作用域，把每次循环的i保存了下来
+
+    三，也可以使用自定义属性，先定义一个自定义属性，在每次循环时把i的值赋予自定义属性
+    发生点击事件时，弹出的内容自定义属性，而不是循环变量i，这样就可以解决了
+    <div id="btnBox">
+        <input type="button" value="button_1" />
+        <input type="button" value="button_2" />
+        <input type="button" value="button_3" />
+        <input type="button" value="button_4" />
+        <input type="button" value="button_5" />
+    </div>
+
+    <script type="text/javascript">
+        var btnBox=document.getElementById('btnBox'),
+            inputs=btnBox.getElementsByTagName('input');
+        var l=inputs.length;
+        for(var i=0;i<l;i++){
+            inputs[i].onclick=function(){
+                alert(i);
+            }
+        }
+
+    2、用友面试题
+
+    var fullName='language';
+    var obj={
+        fullName='javascript',
+        prop:{
+            getFullName:function(){
+                return this.fullName;
+            }
+        }
+    };
+    console.log(obj.prop.getFullName()); // undefinded
+    var test=obj.prop.getFullName;
+    console.log(test());
+    var name='window';
+    var Tom={
+        name:"Tom",
+        show:function(){
+            console.log(this.name);
+        },
+        wait:function(){
+            var fun=this.show;
+            fun();
+        }
+    };
+    Tom.wait();
+    3、阿里超经典面试题（有难度）
+
+    function Foo() {
+        getName = function () {
+            console.log(1);
+        };
+        return this;
+    }
+    Foo.getName = function () {
+        console.log(2);
+    };
+    Foo.prototype.getName = function () {
+        console.log(3);
+    };
+    var getName = function () {
+        console.log(4);
+    };
+    function getName() {
+        console.log(5);
+    }
+
+    Foo.getName();
+    getName();
+    Foo().getName();
+    getName();
+    new Foo.getName();
+    new Foo().getName();
+    new new Foo().getName();
+    4、腾讯面试题
+
+    function fun(){
+        this.a=0;
+        this.b=function(){
+            alert(this.a);
+        }
+    }
+    fun.prototype={
+        b:function(){
+            this.a=20;
+            alert(this.a);
+        },
+        c:function(){
+            this.a=30;
+            alert(this.a)
+        }
+    }
+    var my_fun=new fun();
+    my_fun.b();
+    my_fun.c();
+    5、如何实现数组去重？（乐视TV）
+
+    6、document.parentNode 和 document.parentnode 的区别？（腾讯）
+
+    7、怎么规避多人开发函数重名的问题？（百度搜索）
+
+    8、JavaScript如何实现面向对象中的继承？ （百度移动）
+
+    9、你理解的闭包作用是什么，优缺点？（乐视）
+
+    趣味题（乐视） 
+    有这样一个村庄，村里的每一个丈夫都背着妻子偷情，村里的每个妻子都知道除了自己丈夫以外的男人偷情，村里有一个规定，如果妻子知道自己的丈夫偷情必须当天处决。有一天村里的女头领说村里有一个丈夫偷情，接下来会发生什么？
+     */
+  </script>
+</body>
+
+</html>
