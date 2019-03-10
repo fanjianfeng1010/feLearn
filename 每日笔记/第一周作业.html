@@ -488,7 +488,8 @@
         三：附加思考题（面试题）
     1、以下代码的功能是要实现为5个input按钮循环绑定click点击事件，绑定完成后点击1、2、3、4、5五个按钮分别会alert输出0、1、2、3、4五个字符。（腾讯）
 
-    请问如下代码是否能实现？ // 不能实现
+    请问如下代码是否能实现？ // 不能实现,因为事件绑定在js中是异步编程，当触发点击行为，绑定方法执行的时候，外层循环已经结束
+    ：方法执行产生私有作用域，用到变量i，不是私有变量，按照’作用域链查找机制‘，找到全局下的i（此时全局的i已经成为循环的最好一次的结果3）
     如果不能实现那么现在的效果是什么样的？ // 点击每个按钮都弹出5
     应该做怎样的修改才能达到我们想要的效果，并说明原理？
     // 可以使用es6语法，for循环内部使用let 声明变量，原理是使用let声明变量，
@@ -516,52 +517,87 @@
                 alert(i);
             }
         }
-
-    2、用友面试题
-
-    var fullName='language';
-    var obj={
-        fullName='javascript',
-        prop:{
-            getFullName:function(){
-                return this.fullName;
+        // 解决方案一，闭包
+         var btnBox=document.getElementById('btnBox'),
+            inputs=btnBox.getElementsByTagName('input');
+          var l=inputs.length;
+          for (var i = 0; i < l; i++) {
+            inputs[i].onclick = (function (i) {
+              return function () {
+                alert(i)
+              }
+            })(i)
+          }
+          
+          // 解决方案二，自定义属性
+          var btnBox=document.getElementById('btnBox'),
+            inputs=btnBox.getElementsByTagName('input');
+          var l=inputs.length;
+          for (var i = 0; i < l; i++) {
+            inputs[i].myIndex = i
+            inputs[i].onclick = function() {
+              alert(this.myIndex)
             }
+          }
+  */
+    // 2、 用友面试题 考查this
+    /*
+     *  1.元素绑定事件,方法中的this就是当前操作的元素
+     *  2.方法名前面是否有点，有点，点前面的谁this就是谁，没有this就是window（严格模式下就是undefined）
+     *  3.构造函数执行，方法中的this就是当前类的一个实例
+     * 
+     */
+
+    var fullName = 'language';
+    var obj = {
+      fullName = 'javascript',
+      prop: {
+        getFullName: function () {
+          return this.fullName;
         }
+      }
     };
-    console.log(obj.prop.getFullName()); // undefinded
-    var test=obj.prop.getFullName;
+    console.log(obj.prop.getFullName()); // undefined 此时this的指向是obj.prop, 而obj.prop中没有fullName这个属性，所以返回的是undefined
+    var test = obj.prop.getFullName; // 输出结果是’language‘,test的实际内容是一个返回"this.fullName"的函数，当调用这个函数的时候，this指向
+    //全局作用域，在非严格模式下，即window，全局变量中有fullName这个变量，所以输出结果是 window.fullName => 'language'
     console.log(test());
-    var name='window';
-    var Tom={
-        name:"Tom",
-        show:function(){
-            console.log(this.name);
-        },
-        wait:function(){
-            var fun=this.show;
-            fun();
-        }
+
+    var name = 'window';
+    var Tom = {
+      name: "Tom",
+      show: function () {
+        console.log(this.name);
+      },
+      wait: function () {
+        var fun = this.show;
+        fun();
+      }
     };
     Tom.wait();
-    3、阿里超经典面试题（有难度）
+    /*
+     *Tom.wait() 此时this指向tom, 则this.show =>tom.show,而fun()执行的时候this指向window，即fun()执行的时候是输出window.name => 'window'
+     *
+     */
+    //  3、 阿里超经典面试题（ 有难度）
 
     function Foo() {
-        getName = function () {
-            console.log(1);
-        };
-        return this;
+      getName = function () {
+        console.log(1);
+      };
+      return this;
     }
     Foo.getName = function () {
-        console.log(2);
+      console.log(2);
     };
     Foo.prototype.getName = function () {
-        console.log(3);
+      console.log(3);
     };
     var getName = function () {
-        console.log(4);
+      console.log(4);
     };
+
     function getName() {
-        console.log(5);
+      console.log(5);
     }
 
     Foo.getName();
@@ -571,40 +607,70 @@
     new Foo.getName();
     new Foo().getName();
     new new Foo().getName();
-    4、腾讯面试题
 
-    function fun(){
-        this.a=0;
-        this.b=function(){
-            alert(this.a);
-        }
+
+    //  4、 腾讯面试题
+
+    function fun() {
+      this.a = 0;
+      this.b = function () {
+        alert(this.a);
+      }
     }
-    fun.prototype={
-        b:function(){
-            this.a=20;
-            alert(this.a);
-        },
-        c:function(){
-            this.a=30;
-            alert(this.a)
-        }
+    fun.prototype = {
+      b: function () {
+        this.a = 20;
+        alert(this.a);
+      },
+      c: function () {
+        this.a = 30;
+        alert(this.a)
+      }
     }
-    var my_fun=new fun();
-    my_fun.b();
-    my_fun.c();
-    5、如何实现数组去重？（乐视TV）
+    var my_fun = new fun();
+    my_fun.b(); // => my_fun的构造函数里面有b这个属性，调用了a这个属性，所以输出的是 0
+    my_fun.c(); // => my_fun的构造函数里面没有c这个属性，所以去原型链上查找，找到了c，c的内容是修改this.a的值，然后再输出，所以输出30
+    // 5、 如何实现数组去重？（ 乐视TV）
+    var ary = [1, 2, 3, 4, 5]
+    var unique = function (ary) {
+      var obj = {}
+      for (var i = 0; i < ary.length; i++) {
+        var item = ary[i]
+        if (obj.hasOwnProperty(item)) {
+          /*
+           *优化方案一，不使用splice删除（删除当前项，后面索引位置移动，如果后面存在很多项，索引计算次数过多，造成性能浪费）
+           */
+          ary[i] = ary[ary.length - 1]
+          ary.pop()
+          i--
+          continue
+          // ary.splice(i, 1)
+          // i--
+          // continue
+        }
+        obj[item] = item
+      }
+      obj = null
+      return ary
+    }
 
-    6、document.parentNode 和 document.parentnode 的区别？（腾讯）
+    // 6、 document.parentNode 和 document.parentnode 的区别？（ 腾讯）
+    // document.parentNode 在浏览器中，document就是所有元素节点的父节点，document不存在父节点，返回结果是null，
+    // document.parentnode 是一个属性，在没有定义的情况下是undefined
+    // 7、 怎么规避多人开发函数重名的问题？（ 百度搜索）
+    // 基于单利模式或者其他方法使用模块化思想开发方法
+    /*
+      把当前模块的函数都放在一个命名空间中开发
+    */
+    //  8、 JavaScript如何实现面向对象中的继承？（ 百度移动）
 
-    7、怎么规避多人开发函数重名的问题？（百度搜索）
-
-    8、JavaScript如何实现面向对象中的继承？ （百度移动）
-
-    9、你理解的闭包作用是什么，优缺点？（乐视）
-
-    趣味题（乐视） 
-    有这样一个村庄，村里的每一个丈夫都背着妻子偷情，村里的每个妻子都知道除了自己丈夫以外的男人偷情，村里有一个规定，如果妻子知道自己的丈夫偷情必须当天处决。有一天村里的女头领说村里有一个丈夫偷情，接下来会发生什么？
-     */
+    // 9、 你理解的闭包作用是什么， 优缺点？（ 乐视）
+    /*
+      闭包能形成私有作用域，保护内部私有变量不受外界影响，同时也可是保存变量，不会丢失
+      缺点是形成了不销毁的私有作用域，对内存性能有所影响
+    */
+    // 趣味题（ 乐视）
+    //  有这样一个村庄， 村里的每一个丈夫都背着妻子偷情， 村里的每个妻子都知道除了自己丈夫以外的男人偷情， 村里有一个规定， 如果妻子知道自己的丈夫偷情必须当天处决。 有一天村里的女头领说村里有一个丈夫偷情， 接下来会发生什么？
   </script>
 </body>
 
