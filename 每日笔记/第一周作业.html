@@ -600,10 +600,10 @@
       console.log(5);
     }
 
-    Foo.getName();
-    getName();
-    Foo().getName();
-    getName();
+    Foo.getName(); // 调用的是Foo这个对象的getName属性/方法，输出 2
+    getName(); // 运行getName函数， 输出 4
+    Foo().getName(); // 调用的是 Foo这个函数对象的getName属性/方法，输出1
+    getName(); // 
     new Foo.getName();
     new Foo().getName();
     new new Foo().getName();

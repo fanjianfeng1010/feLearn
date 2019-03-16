@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+    * 要求: 1，写出一个函数，能对输入任意个参数求取平均值，
+           2，去除最大值和最小值
+    *
+    */
+    const avg = (...arg) => {
+      arg.sort((a, b) => {
+        a - b
+      }).pop()
+      arg.shift()
+      return eval(arg.join('+'))
+
+    }
+  </script>
+</body>
+
+</html>
