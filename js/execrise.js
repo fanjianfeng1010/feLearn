@@ -35,60 +35,64 @@
 //     // 此时在局部作用域中输出arg[0] => n => m => 10, arg[1] => 20
 //   }(m)
 // console.log(n, m)
-
-let ary = [12, 23, 34, 45];
-(function (ary) {
-  ary.pop()
-  ary = ary.slice(0)
-  ary.shift()
-  console.log(ary) // => [23,34] 
-})(ary)
-console.log(ary) // => [12,23,34]
-
-
-let i = 0
-let fn = function (n) {
-  i += 2
-  return function (m) {
-    i += (++n) + (m--)
-    console.log(i)
+{
+  let ary = [12, 23, 34, 45];
+  (function (ary) {
+    ary.pop()
+    ary = ary.slice(0)
+    ary.shift()
+    console.log(ary) // => [23,34] 
+  })(ary)
+  console.log(ary) // => [12,23,34]
+} {
+  let i = 0
+  let fn = function (n) {
+    i += 2
+    return function (m) {
+      i += (++n) + (m--)
+      console.log(i)
+    }
   }
+  let f = fn(2)
+  f(3) //=> 2 + 3 +3
+  fn(2)(3) // 8+ 2 + 3 + 3
+  f(4) // 16 + 4 + 4
+  console.log(i)
 }
-let f = fn(2)
-f(3) //=> 2 + 3 +3
-fn(2)(3) // 8+ 2 + 3 + 3
-f(4) // 16 + 4 + 4
-console.log(i)
 
 
-var n = 0
-var fn = function () {
-  this.n *= 2
-  n++
-  return function (m) {
-    n += ++m
-    console.log(n)
+{
+  var n = 0
+  var fn = function () {
+    this.n *= 2
+    n++
+    return function (m) {
+      n += ++m
+      console.log(n)
+    }
   }
+  var f = fn(2) // 
+  f(3) // 1 + 4
+  fn(3)(4) // 11 + 5
+  f(4) // 17 + 4
+  console.log(n) // 17
 }
-var f = fn(2) // 
-f(3) // 1 + 4
-fn(3)(4) // 11 + 5
-f(4) // 17 + 4
-console.log(n) // 17
 
-let i = 2
-let fn = function (n) {
-  i *= 2
-  return function (m) {
-    i -= (n--) + (++m)
-    console.log(i)
+
+{
+  let i = 2
+  let fn = function (n) {
+    i *= 2
+    return function (m) {
+      i -= (n--) + (++m)
+      console.log(i)
+    }
   }
+  let f = fn(1)
+  f(2)
+  fn(3)(4)
+  f(5)
 }
-let f = fn(1)
-f(2)
-fn(3)(4)
-f(5)
-
 /**
  * 全局作用域中
  *  词法分析，变量声明,代码自上而下执行
@@ -137,23 +141,24 @@ f(5)
  *    
  *    
  * */
-
-let n = 10
-let obj = {
-  n: 20
-}
-let fn = obj.fn = (function () {
-  this.n++
-  n++
-  return function (m) {
-    n += 10 + (++m)
-    this.n += n
-    console.log(n)
+{
+  let n = 10
+  let obj = {
+    n: 20
   }
-})(obj.n)
-fn(10)
-obj.fn(10)
-console.log(n, obj.n)
+  let fn = obj.fn = (function () {
+    this.n++
+    n++
+    return function (m) {
+      n += 10 + (++m)
+      this.n += n
+      console.log(n)
+    }
+  })(obj.n)
+  fn(10)
+  obj.fn(10)
+  console.log(n, obj.n)
+}
 /**
  * 全局作用域中
  *    词法分析，声明变量， let n = 10,let obj = 'AAAFFF000' 
@@ -181,25 +186,25 @@ console.log(n, obj.n)
  *            this.n += n => this =>obj => obj.n = 20 + 53
  */
 
-
-let n = 1
-let x = {
-  n: 2,
-  y: (function (n) {
-    n = n || 3
-    return function (m) {
-      m = m || 4
-      this.n += m++
-      n += ++m
-      console.log(n)
-    }
-  })(window.n)
+{
+  let n = 1
+  let x = {
+    n: 2,
+    y: (function (n) {
+      n = n || 3
+      return function (m) {
+        m = m || 4
+        this.n += m++
+        n += ++m
+        console.log(n)
+      }
+    })(window.n)
+  }
+  let z = x.y
+  x.y(5)
+  z(6)
+  console.log(n, x.n)
 }
-let z = x.y
-x.y(5)
-z(6)
-console.log(n, x.n)
-
 /**
  * 全局作用域中 词法分析，代码自上而下执行
  *  let n = 1
@@ -234,3 +239,93 @@ console.log(n, x.n)
  *  
  * 
  */
+{
+  let a = {
+    n: 4
+  }
+  let b = a
+  b.x = a = {
+    n: 10
+  }
+  console.log(a.x) // => undefined
+  console.log(b.x) // => {n:10}
+
+}
+
+{
+  function C1(name) {
+    if (name) {
+      this.name = name
+    }
+  }
+
+  function C2(name) {
+    this.name = name
+  }
+
+  function C3(name) {
+    this.name = name || 'join'
+  }
+
+  C1.prototype.name = 'Tom'
+  C2.prototype.name = 'Tom'
+  C3.prototype.name = 'Tom'
+  console.log(new C1().name + new C2().name + new C3().name)
+  /**
+   * new C1().name => Tom
+   * new C2().name => undefined
+   * new C3().name => join
+   */
+
+}
+
+{
+  function C1(name) { // => name = undefined
+    this.name = name || 'join'
+  }
+
+  function C2(name) { // => name = undefined
+    name ? this.name = name : null
+  }
+
+  function C3(name) { // => name = undefined
+    this.name = name && 'join'
+  }
+  C1.prototype.name = 'Tom'
+  C2.prototype.name = 'Tom'
+  C3.prototype.name = 'Tom'
+  console.log(new C1().name + new C2().name + new C3().name)
+  /**
+   * new C1().name => join
+   * new C2().name => Tom
+   * new C3().name => 'undefined'
+   */
+}
+
+{
+  let Fn = function (x = 0, y = 0) {
+    this.x = x
+    this.y = y
+    this.getX = function () {
+      console.log(this.x)
+    }
+  }
+  Fn.prototype.getY = function () {
+    console.log(this.y)
+  }
+
+  Fn.prototype = {
+    setX: function (val) {
+      this.x = val
+    },
+    getX: function () {
+      console.log(this.x)
+    }
+  }
+
+  let f1 = new Fn
+  let f2 = new Fn(1, 2)
+  console.log(f1.constructor)
+  f1.setX(3)
+  f1.getX()
+}
