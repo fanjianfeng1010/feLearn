@@ -64,9 +64,10 @@ const utils = (function () {
   // css:集合get/set/set/group的方法集合
   const css = function (...arg) {
     let len = arg.length
+    let second = arg[1]
     let fn = getCss1
     len >= 3 ? fn = setCss : null
-    len === 2 && (arg[1] instanceof Object) ? fn = setGroupCss : null
+    len === 2 && (second instanceof Object) ? fn = setGroupCss : null
     return fn(...arg)
   }
   // => 获取当前元素距离body的偏移
@@ -80,11 +81,8 @@ const utils = (function () {
       // 3. 把找到的父级参照物的边框和偏移量累加起来
       cruLeft += p.clientLeft
       cruLeft += p.offsetLeft
-
       curTop += p.clientTop
       curTop += p.offsetTop
-
-
       p = p.offsetParent //基于当前元素找到父级参照物继续向上找
     }
   }
