@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/reset.min.css">
+  <style>
+    .box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      background: #E12EA4
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script>
+    // 固定距离匀速运动
+    /*   let box = document.querySelector('.box')
+      let minL = 0,
+        maxL = document.documentElement.clientWidth - box.offsetWidth,
+        speed = 10
+
+      let timmer = setInterval(() => {
+        let curL = box.offsetLeft
+        curL += speed
+        if (curL > maxL) {
+          clearInterval(timmer)
+          return
+        }
+        box.style.left = curL + 'px'
+      }, 17) */
+
+    let box = document.querySelector('.box'),
+      minL = 0,
+      maxL = document.documentElement.clientWidth - box.offsetWidth,
+      duration = 1000, // 总时间
+      interval = 17, // 频率 多上时间迈异步
+      begin = 0,
+      target = maxL,
+      change = target - begin, // 总距离：目标值(target) - 初始值(begin)
+      time = 0
+
+    let autoTimer = setInterval(() => {
+      // => 根据公式计算出当前盒子应有的位置
+      time += interval
+      if (time >= duration) {
+        box.style.left = target + 'px'
+        clearInterval(autoTimer)
+        return
+      }
+      let curL = time / duration * change + begin
+      box.style.left = curL + 'px'
+    }, interval)
+
+
+    // js中基于定时器完成动画，不伦是固定步长还是固定时间
+    //，只要算出当前盒子应该运动的位置信息即可 (新位置信息)
+    // t:time 当前运动的时间
+    // b:begin起始位置
+    // c:change总距离
+    // d：duration
+    /*
+      t/d:当前运动的时间/总时间 => 当前动画完成的百分比
+      t/d*c:当前动画完成的百分比*总距离 => 当前以及走完的距离
+      t/d*c+b: 当前走的距离+盒子起始位置 =>当前盒子应该有的位置
+    */
+  </script>
+</body>
+
+</html>

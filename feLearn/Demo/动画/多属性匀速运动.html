@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/reset.min.css">
+  <style>
+    .box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      background: #E12EA4
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script src="animate.js"></script>
+  <script>
+    let box = document.querySelector('.box')
+    animate(box, {
+      top: 600,
+      left: 600,
+      width: 400,
+      height: 200,
+    }, 3000)
+
+    animate(box, {
+      top: 200,
+      left: 200,
+      width: 400,
+      height: 200,
+    }, 3000)
+    // // let begin = {
+    // // left: 0,
+    // // top: 0
+    // // }
+    // let box = document.querySelector('.box')
+    // let time = 0,
+    //   duration = 1000;
+
+    // let target = {
+    //   left: document.documentElement.clientWidth - box.offsetWidth,
+    //   top: document.documentElement.clientHeight - box.offsetHeight,
+    //   width: 50,
+    //   height: 50
+    // }
+    // // 根据目标值计算出当前元素每一个运动方向的总距离
+    // let change = {}
+
+    // // 起始值根据目标值可算出来
+    // let begin = {}
+    // // left: target['left'] - begin['left'],
+    // // top: target['top'] - begin['top']
+
+    // for (let attr in target) {
+    //   if (target.hasOwnProperty(attr)) {
+    //     begin[attr] = parseFloat(window.getComputedStyle(box)[attr]) // 算出起始值
+    //     change[attr] = target[attr] - begin[attr] // 计算总距离
+    //   }
+    // }
+
+    // let animateTimer = setInterval(() => {
+    //     time += 17
+    //     if (time >= duration) {
+    //       clearInterval(animateTimer)
+    //       for (let key in target) {
+    //         // console.log(key)
+    //         if (target.hasOwnProperty(key)) {
+    //           box.style[key] = target[key] + 'px'
+    //         }
+    //       }
+    //       return
+    //     }
+    //     // 根据目标值中的方向，基于公式计算出每一个方向的当前位置
+    //     let cur = {} // 当前运动的位置
+    //     for (let attr in target) {
+    //       if (target.hasOwnProperty(attr)) {
+    //         cur[attr] = time / duration * change[attr] + begin[attr]
+    //       }
+    //     }
+
+    //     // 根据目标方向的不同设置目标的当前位置
+    //     for (let key in cur) {
+    //       // console.log(key)
+    //       if (cur.hasOwnProperty(key)) {
+    //         box.style[key] = cur[key] + 'px'
+    //         console.log(box.style[key])
+    //       }
+    //     }
+    //   },
+    //   17)
+  </script>
+</body>
+
+</html>
