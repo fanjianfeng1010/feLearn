@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9d27b305-4332-4ec2-a1e8-199506f8b292" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/每日笔记/2019.03.05.md" afterPath="$PROJECT_DIR$/每日笔记/2019.03.05.md" />
-      <change beforePath="$PROJECT_DIR$/每日笔记/2019.03.14.md" afterPath="$PROJECT_DIR$/每日笔记/2019.03.14.md" />
-      <change beforePath="$PROJECT_DIR$/每日笔记/2019.03.26.md" afterPath="$PROJECT_DIR$/每日笔记/2019.03.26.md" />
+      <change beforePath="$PROJECT_DIR$/每日笔记/2019.03.10.md" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,11 +17,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/feLearn/Demo/H5交互简历/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="247">
-              <caret line="13" column="31" lean-forward="true" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+              <caret line="15" column="31" lean-forward="false" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/feLearn/Demo/新浪官网/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="437">
+              <caret line="23" column="11" lean-forward="true" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -102,22 +110,7 @@
               <item name="codewars" type="462c0819:PsiDirectoryNode" />
               <item name="feLearn" type="462c0819:PsiDirectoryNode" />
               <item name="Demo" type="462c0819:PsiDirectoryNode" />
-              <item name="H5交互简历" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="codewars" type="b2602c69:ProjectViewProjectNode" />
-              <item name="codewars" type="462c0819:PsiDirectoryNode" />
-              <item name="feLearn" type="462c0819:PsiDirectoryNode" />
-              <item name="Demo" type="462c0819:PsiDirectoryNode" />
-              <item name="轮播图" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="codewars" type="b2602c69:ProjectViewProjectNode" />
-              <item name="codewars" type="462c0819:PsiDirectoryNode" />
-              <item name="feLearn" type="462c0819:PsiDirectoryNode" />
-              <item name="Demo" type="462c0819:PsiDirectoryNode" />
-              <item name="轮播图" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="新浪官网" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -172,11 +165,12 @@
       <workItem from="1554553477350" duration="2165000" />
       <workItem from="1554792185712" duration="338000" />
       <workItem from="1555391112040" duration="43000" />
+      <workItem from="1556022367058" duration="33000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14221000" />
+    <option name="totallyTimeSpent" value="14254000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1566" y="-128" width="1280" height="777" extended-state="0" />
@@ -215,6 +209,14 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/feLearn/Demo/H5交互简历/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/feLearn/Demo/H5交互简历/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -352,7 +354,15 @@
     <entry file="file://$PROJECT_DIR$/feLearn/Demo/H5交互简历/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
-          <caret line="13" column="31" lean-forward="true" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+          <caret line="15" column="31" lean-forward="false" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/feLearn/Demo/新浪官网/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="23" column="11" lean-forward="true" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
           <folding />
         </state>
       </provider>

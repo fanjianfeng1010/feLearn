@@ -1,0 +1,173 @@
+@import "reset"; // 清除默认样式
+@import "swiper"; // swiper插件需要使用的
+@import "font"; // 字体图标库
+@import "common"; // 公用的less资源
+
+html {
+  // 默认rem 640设计稿：1rem =100px
+  font-size: 100px;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.mainBox {
+  margin: 0 auto;
+  max-width: 640px;
+  min-width: 32px;
+  background: #f4f4f4;
+}
+
+//==================
+
+.headerBox {
+  padding: 0 0.2rem;
+  height: 1rem;
+  line-height: 1rem;
+  background: @blue;
+  overflow: hidden;
+
+  h1 {
+    float: left;
+    font-size: 0;
+
+    i {
+      font-size: 0.8rem;
+      color: #f4f4f4;
+    }
+  }
+
+  a {
+    float: right;
+    margin-left: 0.32rem;
+    width: 0.44rem;
+    height: 100%;
+
+    &.weather {
+      background: url("../images/cloud.gif") no-repeat center center;
+      background-size: 100%;
+    }
+
+    &.person,
+    &.navMenu {
+      font-size: 0.44rem;
+      color: #fff;
+    }
+  }
+}
+
+.navBox {
+  display: none;
+  padding: 0.16rem 0;
+
+  a {
+    float: left;
+    width: unit(100/6, %);
+    height: 0.64rem;
+    line-height: 0.64rem;
+    text-align: center;
+    font-size: 0.32rem;
+    color: @text;
+  }
+}
+
+.bannerBox {
+  display: none;
+  height: 3.4rem;
+  overflow: hidden;
+
+  .swiper-slide {
+    position: relative;
+    height: 100%;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    p {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      box-sizing: border-box;
+      padding: 0 0.2rem;
+      width: 100%;
+      height: 0.6rem;
+      line-height: 0.6rem;
+      font-size: 0.28rem;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
+      .text-clip;
+    }
+  }
+
+  .swiper-pagination {
+    z-index: 10;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    width: 1rem;
+    height: .6rem;
+    line-height: .6rem;
+    text-align: center;
+    font-size: .28rem;
+    color: rgba(255, 255, 255, .5);
+
+    .swiper-pagination-current {
+      color: #fff;
+      font-weight: bold;
+    }
+  }
+}
+
+.messageBox {
+  position: relative;
+  margin: .16rem 0;
+  height: .8rem;
+  background: #FFF;
+
+  .liveFlag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1rem;
+    height: .8rem;
+
+    &:after {
+      content: '直播';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -.2rem 0 0 -.37rem;
+      width: .74rem;
+      height: .4rem;
+      line-height: .4rem;
+      text-align: center;
+      font-size: .3rem;
+      color: #FFF;
+      background: #FA4E46;
+
+    }
+  }
+
+  .swiper-container {
+    margin-left: 1rem;
+    height: .8rem;
+    overflow: hidden;
+
+    .swiper-slide {
+      height: .8rem;
+      line-height: .8rem;
+
+      a {
+        display: block;
+        font-size: .28rem;
+        color: @text;
+        .text-clip;
+      }
+    }
+  }
+}

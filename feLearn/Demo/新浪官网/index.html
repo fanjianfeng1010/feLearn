@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0 user-scalable=no, maximum-scale=1.0,minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <link rel="stylesheet/less" href="css/index.less" />
+  <script src="js/less-2.5.3.min.js"></script>
+  <script src="js/prefixfree.min.js"></script>
+  <!-- rem & other -->
+  <script>
+    (function anouymous() {
+      const computedREM = function computedREM() {
+        let HTML = document.documentElement,
+          winW = HTML.clientWidth, // 实际长度
+          desW = 640; // 设计稿长度
+        if (winW >= desW) {
+          HTML.style.fontSize = "100px";
+          return;
+        }
+        HTML.style.fontSize = (winW / desW) * 100 + "px"; // 设置rem单位
+      };
+      computedREM();
+      window.addEventListener("resize", computedREM);
+    })();
+  </script>
+</head>
+
+<body>
+  <main class="mainBox">
+    <header class="headerBox">
+      <h1>
+        <i class="icon-logo"></i>
+        新浪网
+      </h1>
+      <a href="javscript:;" class="navMenu icon-menu"></a>
+      <a href="javscript:;" class="person icon-user"></a>
+      <a href="javscript:;" class="weather"></a>
+    </header>
+
+    <!-- NAV -->
+    <nav class="navBox clearfix">
+      <a href="#">新闻</a>
+      <a href="#">菜鸡</a>
+      <a href="#">体育</a>
+      <a href="#">娱乐</a>
+      <a href="#">军事</a>
+      <a href="#">汽车</a>
+      <a href="#">博客</a>
+      <a href="#">美图</a>
+      <a href="#">NBA</a>
+      <a href="#">历史</a>
+      <a href="#">小说</a>
+    </nav>
+    <!-- S-banner -->
+    <section class="swiper-container bannerBox">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img src="images/1.jpg" alt="" />
+          <p>捉了一大鱼</p>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </section>
+    <!-- E-banner -->
+
+    <!-- S-Message -->
+    <section class="messageBox">
+      <div class="liveFlag"></div>
+      <section class="swiper-container messageCon">
+        <div class="swiper-wrapper">
+          <!-- <div class="swiper-slide"> <a href="">xxxx</a> </div> -->
+        </div>
+      </section>
+    </section>
+    <!-- E-Message -->
+
+    <!-- S-NewsList -->
+    <section class="newsBox">
+      <ul class="container">
+        <li class="newItem">
+          <img src="images/news.jpg" alt="" />
+          <h3>房企在此涌入到三四线市场，持久性待考察</h3>
+          <span>20万</span>
+        </li>
+
+        <li class="newsItem imgBox">
+          <h3>房企在此涌入到三四线市场，持久性待考察</h3>
+          <div>
+            <img src="images/news.jpg" alt="" />
+            <img src="images/news.jpg" alt="" />
+            <img src="images/news.jpg" alt="" />
+          </div>
+          <span>20万</span>
+        </li>
+      </ul>
+    </section>
+    <!-- E-NewsList -->
+  </main>
+  <script src="js/zepto.min.js"></script>
+  <script src="js/swiper-3.4.2.jquery.min.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>
