@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .time-box {
+      margin: 20px auto;
+      width: 300px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      border: 1px dashed lightblue;
+      font-size: 20px;
+    }
+
+    .time-box span {
+      color: red;
+      font-weight: bolder;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="time-box">
+    距离抢购还剩: <span> -- : -- : --</span>
+  </div>
+
+  <script>
+    /****
+     * 1 实现从服务器取得时间，并且只发送一次请求
+     * 2 计算
+     * 
+     */
+
+    // =>获取操作的元素
+    let timeBox = document.querySelector('.time-box'),
+      timeText = timeBox.querySelector('span'),
+      autoTimer = null,
+      _severTime = null;
+
+    const timeFormat = function timeFormat(time) {
+      let restSeconds = 0,
+        timeSeconds = time / 1000,
+        hours = Math.floor(timeSeconds / 3600);
+
+      restSeconds = timeSeconds - hours * 3600;
+
+      let minutes = Math.floor(restSeconds / 60);
+
+      let seconds = Math.floor(restSeconds % 60);
+
+      console.log(hours, minutes, seconds);
+
+      hours < 10 ? hours = '0' + hours : null;
+      minutes < 10 ? minutes = '0' + minutes : null
+      seconds < 10 ? seconds = '0' + seconds : null
+
+      return [hours, minutes, seconds];
+    }
+
+    const queryTime = function queryTime() {
+      if (_severTime) {
+        _severTime = new Date(_severTime.getTime() + 100)
+        return _severTime;
+      }
+
+      return new Promise(resolve => {
+        let xhr = new XMLHttpRequest(),
+          serverTime = null;
+        xhr.open('HEAD', '../新浪官网/banner.json');
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 2) {
+            serverTime = new Date(xhr.getResponseHeader('date'));
+            _severTime = serverTime;
+            resolve(serverTime);
+          }
+        }
+        xhr.send(null);
+      });
+    };
+
+    const computedTime = function computedTime() {
+      let promise = queryTime();
+      promise instanceof Promise ? promise.then(fn) : fn(promise);
+
+      function fn(serverTime) {
+        let nowTime = serverTime,
+          targetTime = new Date('2019/04/29 23:37:00'),
+          diffTime = targetTime - nowTime;
+        console.log((targetTime - nowTime));
+
+        let [hours, minutes, seconds] = timeFormat(diffTime)
+        timeText.innerHTML = `${hours} : ${minutes} : ${seconds}`
+
+        // 如果已经到达了指定的时间，停止计时
+        if (diffTime <= 0) {
+          timeText.innerHTML = `-- : -- : -- `;
+          clearInterval(autoTimer);
+          return
+        }
+      }
+
+    }
+
+    autoTimer = setInterval(computedTime, 1000);
+  </script>
+</body>
+
+</html>

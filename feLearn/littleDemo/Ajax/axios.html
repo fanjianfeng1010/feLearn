@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="promiseAJAX.js"></script>
+  <script>
+    /*
+     *  axios:它是一个类库，基于promise管理的AJAX库
+     *   1.提供了对应请求方式的方法(例如:get/post/head/....)
+     *      axios.get() 向服务器发送一个请求，基于GET方式
+     *   2. 支付的参数配置
+     *    axios.get([url],[options])
+     *   3. 基于GET或者POST方法发送请求，返回的结果都是promise实例
+     * */
+
+    ajaxPromise.defaults.baseURL =
+      'https://www.easy-mock.com/mock/5cc093983fa0377e2b657d98/example'
+    // send
+    ajaxPromise.get('/banner.json').then((result, xhr) => {
+      console.log(result, xhr)
+    })
+  </script>
+</body>
+
+</html>

@@ -1,5 +1,7 @@
 {
   "eslint.enable": true,
   "vetur.format.defaultFormatter.js": "prettier-eslint",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "fileheader.LastModifiedBy": "fanjianfeng",
+  "fileheader.Author": "fanjianfeng"
 }

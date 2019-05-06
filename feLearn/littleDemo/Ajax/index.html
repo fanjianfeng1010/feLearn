@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*  let xhr = new XMLHttpRequest();
+    xhr.open('GET',
+      'https://www.easy-mock.com/mock/5cc093983fa0377e2b657d98/example/banner.json?id=1'
+    );
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        let data = JSON.parse(xhr.responseText);
+        console.log(data)
+      }
+    }
+    xhr.send(null) */
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'index.js', false);
+    xhr.onreadystatechange = () => {
+      /*   if (xhr.readyState === 4 && xhr.status === 200) {
+          let data = JSON.parse(xhr.responseText);
+          console.log(data)
+        } */
+      if (xhr.readyState === 2) {
+        console.log(1)
+      }
+      if (xhr.readyState === 4) {
+        console.log(2)
+      }
+    }
+    xhr.send()
+    console.log(3)
+    // 输出2 3 因为当AJAX任务开始，由于是同步编程，主任务对了在状态没有变成4（任务结束）之前一直被这监事占用着，其他事情都坐不了（当任务吧响应头返回的时候，状态为2
+    // 触发了时间，由于主任务对了没有完成，被占用着，绑定的方法也无法执行，所以只有状态为4的时候执行了一次这给方法）
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet/less" href="../Demo/新浪官网/css/reset.less">
+  <link rel="stylesheet/less" href="index.less">
+  <script src="../../js/less-2.5.3.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <!-- <div><img src="" alt=""></div> -->
+    </div>
+  </div>
+
+  <script>
+    let container = document.querySelector('.container'),
+      wrapper = container.querySelector('.wrapper'),
+      loopList = null,
+      autoTimer = null,
+      stepIndex = 0
+
+    const querData = function querData() {
+      return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest
+        xhr.open('GET', 'banner.json')
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            let data = JSON.parse(xhr.responseText)
+            resolve(data)
+          }
+        }
+        xhr.send(null)
+      })
+    }
+
+    const bindHTML = function bindHTML(data) {
+      let str = ``
+      data.forEach((item, index) => {
+        let {
+          img,
+          desc
+        } = item
+        str += `<div class='slide'><img src="${img}" alt="${desc}"></div>`
+      })
+      wrapper.innerHTML = str
+      loopList = wrapper.querySelectorAll('.slide')
+
+      // 实现无缝滚动，克隆第一个元素到列表末尾
+      wrapper.append(loopList[0].cloneNode(true))
+      loopList = wrapper.querySelectorAll('.slide')
+
+      // 根据获取的元素数量设置wrapper的宽度
+      wrapper.style.width = loopList.length * 1000 + 'px'
+    }
+
+    // 自动
+    const autoMove = function autoMove() {
+      stepIndex++
+
+      // 如果stepIndex 大于等于4了，说明已经是最后一张图了，此时就把wrapper的位置重新设置为0就好了
+      if (stepIndex > loopList.length - 1) {
+        wrapper.style.left = 0
+        stepIndex = 1
+      }
+
+      wrapper.style.left = -stepIndex * 1000 + 'px'
+      console.log(stepIndex)
+    }
+
+    let promise = querData()
+    promise.then(bindHTML)
+      .then(() => {
+        autoTimer = setInterval(() => {
+          autoMove()
+        }, 3000)
+      })
+  </script>
+</body>
+
+</html>

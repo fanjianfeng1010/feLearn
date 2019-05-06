@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/reset.min.css">
+  <style>
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #777;
+    }
+
+    #spa {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 8px 8px 0 8px;
+      background: #fff000;
+    }
+
+    .spa-slider {
+      position: absolute;
+      bottom: 0;
+      right: 2px;
+      width: 300px;
+      height: 16px;
+      cursor: pointer;
+      border-radius: 8px 0 0 0;
+      background: #f00;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="spa">
+    <!-- <div class="spa-slider"> -->
+
+    <!-- </div> -->
+  </div>
+  <script src="../../../js/jquery-3.2.1.min.js"></script>
+  <script>
+    let spa = (function ($) {
+      let configMap = {
+          extended_heiht: 434,
+          extended_title: 'click to retract',
+          retracted_height: 16,
+          retracted_title: 'click to extend',
+          template_html: `<div class='spa-slider'></div>`
+        },
+        $chatSlider,
+        toggleSlider,
+        onClickSlider,
+        initModule
+
+      // Dom Method /toggleSlider/
+      // alternates slider height
+      toggleSlider = function toggleSlider() {
+        let slider_height = $chatSlider.height()
+
+        // extend slider if fully retracted
+        if (slider_height === configMap.retracted_height) {
+          $chatSlider
+            .animate({
+              height: configMap.extended_heiht
+            })
+            .attr('title', configMap.extended_title)
+          return true
+        }
+
+        // retract slider if fully extended
+        else if (slider_height === configMap.extended_heiht) {
+          $chatSlider
+            .animate({
+              height: configMap.retracted_height
+            })
+            .attr('title', configMap.retracted_title)
+          return false
+        }
+        // do not take action if slider is in transition
+        return false
+      }
+
+
+      // event handler /onclickSlider/
+      // receive click event and calls toggleSlider
+      onClickSlider = function (event) {
+        toggleSlider()
+        return false
+      }
+
+      // public method /initModule/
+      // set initial state and provides feature
+
+      initModule = function ($container) {
+        // render HTML
+
+        $container.html(configMap.template_html)
+
+        $chatSlider = $container.find('.spa-slider')
+        // initialize slider height and title
+        // bind the user click to the event handler
+        $chatSlider
+          .attr('title', configMap.retracted_title)
+          .click(onClickSlider)
+
+        return true
+      }
+      return {
+        initModule: initModule
+      }
+    })(jQuery)
+
+    jQuery(document).ready(
+      function () {
+        spa.initModule(jQuery('#spa'))
+      }
+    )
+  </script>
+</body>
+
+</html>

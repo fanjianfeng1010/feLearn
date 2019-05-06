@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .time-box {
+      margin: 20px auto;
+      width: 300px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      border: 1px dashed lightblue;
+      font-size: 20px;
+    }
+
+    .time-box span {
+      color: red;
+      font-weight: bolder;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- JS中野可以获取时间“new Date()” 获取的是客户端时间，这个时间客户端可以任意修改，所以在项目中，如果时间作为重要参考标准，需要使用服务器时间来做参考 -->
+  <div class="time-box">
+    距离抢购还剩: <span> -- : -- : --</span>
+  </div>
+
+  <script>
+    // 获取元素
+    let timeBox = document.querySelector('.time-box'),
+      timeSpan = timeBox.querySelector('span'),
+      timer = null,
+      _serverTime = null;
+
+    // 获取服务器时间
+    const queryTime = function queryTime() {
+
+      if (_serverTime) {
+        // =>第二次执行queryTime:
+        // 用之前记录的全局变量值，但是需要把这个值手动累加1秒
+        _serverTime = new Date(_serverTime.getTime() + 1000);
+        return _serverTime
+      }
+      return new Promise(resolve => {
+        /*  从服务器获取时间会存在一个问题:由于从服务器端返回数据需要时间，所以客户端拿到返回的“服务器时间”的时候，已经过去一会了，
+         导致获取的时间和真实时间是有一定误差的，这个误差越小越好
+         减少误差 1:在AJAX状态为2的时候就从响应头中获取信息，而不是等到更新状态后的4
+         2:请求方式设置为head：只获取响应头即可，响应主体内容不需要 */
+        // 第一次向服务器发送请求：把获取的结果存储到全局变量中
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '../新浪官网/banner.json');
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState ===
+            2) { // && /^(2|3)\d{2}$/.test(xhr.status) 即使我买向服务器发送一个不存在的请求，返回的是404状态码，但是响应头信息都会存在一个服务器时间
+
+            let serverTime = new Date(xhr.getResponseHeader('Date')); // 服务器返回的时间是格林尼治时间，需要转化为当地标准时间
+            _serverTime = serverTime;
+            resolve(serverTime);
+          }
+        }
+        xhr.send(null);
+      })
+    }
+
+
+
+
+    const computedTime = function computedTime() {
+      let promise = queryTime();
+      promise.then(serverTime => {
+        let nowTime = serverTime,
+          tarTime = new Date('2019/04/29 23:37:00'); // => object
+        diffTime = tarTime - nowTime; // 结果是毫秒差
+
+        // => 在毫秒差中计算出对应的时分秒
+        if (diffTime >= 0) {
+          let hours = Math.floor(diffTime / (1000 * 60 * 60));
+          diffTime = diffTime - hours * 3600000;
+          let minutes = Math.floor(diffTime / (1000 * 60));
+          diffTime = diffTime - minutes * 60000;
+          let seconds = Math.floor(diffTime / 1000);
+
+          hours < 10 ? hours = '0' + hours : null;
+          minutes < 10 ? minutes = '0' + minutes : null
+          seconds < 10 ? seconds = '0' + seconds : null
+          timeSpan.innerHTML =
+            `${hours} : ${minutes} : ${seconds}`
+          return
+        }
+        // 已经到了抢购时间了
+        timeSpan.innerHTML = '-- : -- : --';
+        clearInterval(timer)
+      })
+
+    }
+
+    timer = setInterval(() => {
+      computedTime()
+    }, 1000)
+  </script>
+</body>
+
+</html>
