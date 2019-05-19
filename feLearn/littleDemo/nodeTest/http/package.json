@@ -1,0 +1,16 @@
+{
+  "name": "http",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "description": "",
+  "dependencies": {
+    "mime": "^2.4.2",
+    "qs": "^6.7.0"
+  }
+}

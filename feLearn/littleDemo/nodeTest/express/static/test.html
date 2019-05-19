@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="js/axios.min.js"></script>
+  <script src="js/md5.min.js"></script>
+  <script>
+    axios.defaults.baseURL = 'http://localhost:8686'
+    // 响应拦截器
+    axios.interceptors.response.use(result => result.data)
+
+    axios.defaults.transformRequest = data => {
+      // 基于这个请求拦截器可以把POST和put等传递给服务器的请求主体内容进行格式化处理，data就是配置的请求主体对象
+      let str = ``
+      if (data && typeof data === 'object') {
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            const item = data[key];
+            str += `${key}=${item}&`
+            console.log(str);
+          }
+        }
+        data = str.substring(0, str.length - 1)
+      }
+      return data
+    }
+    /* axios.get('/getUser', {
+      params: {
+        userId: 1
+      }
+    }).then(result => {
+      console.log(result);
+    }).catch((error) => {
+        console.log(error)
+    }) */
+
+    // axios默认基于请求主体传递给服务器的是raw格式的:{"name":"XXX"...},真实项目中，我们和服务器约定的传输格式应该是x-www-url-encoded:"name=xxx&xxx"
+    axios.post('/register', {
+      // 请求主体中需要传递给服务器的内容
+      name: '测试',
+      password: hex_md5('000000'), //=> 密码需要经过md5加密(不可逆转的Jamie)
+      phone: '12345678901',
+      sex: 0,
+      bio: 'xxxxxxx'
+    }).then(result => {
+      console.log(result);
+    })
+  </script>
+</body>
+
+</html>

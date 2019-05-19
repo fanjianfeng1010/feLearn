@@ -66,10 +66,13 @@
       // 如果stepIndex 大于等于4了，说明已经是最后一张图了，此时就把wrapper的位置重新设置为0就好了
       if (stepIndex > loopList.length - 1) {
         wrapper.style.left = 0
+        wrapper.style.transition = '0s'
         stepIndex = 1
+        return
       }
 
       wrapper.style.left = -stepIndex * 1000 + 'px'
+      // wrapper.style.transition = '1s'
       console.log(stepIndex)
     }
 

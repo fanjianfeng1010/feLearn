@@ -6,7 +6,9 @@ let spa = (function () {
       </h1>`
     )
   }
+
   return {
+
     initModule
   }
 })()
