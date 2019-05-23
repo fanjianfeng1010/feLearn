@@ -66,13 +66,73 @@
 
 ---
 
-2. reat脚手架深入剖析
-  create-react-app脚手架为了让结构目录清晰，把安装的webpack及配置文件都继承在了react-script模块中，放到了node_modules中
+2. React脚手架的深入剖析
+  create-react-app脚手架为了让结构目录清晰，把安装的webpack及配置文件都集成在了react-scripts模块中，放到了node_modules中
 
-  但是在真实项目中，我们需要在脚手架默认安装的基础上，额外阿女排一些我们需要的模块，例如react-router-dom/axios...
+  但是真实项目中，我们需要在脚手架默认安装的基础上，额外安装一些我们需要的模块，例如：react-router-dom/axios... 再比如：less/less-loader...
 
-  情况一：如果我们安装其他的组件，但是安装成功后不需要修改webpack的配置项，此时我们直接安装，并且调取使用即可
+  情况一：如果我们安装其它的组件，但是安装成功后不需要修改webpack的配置项，此时我们直接的安装，并且调取使用即可
 
-  情况而：我们安装的插件是基于webpack处理的，也就是需要把安装的模块配置到webpack中（重新修改webpack配置项了）
-    =>首先需要把隐藏的node_modules中的配置项暴露到项目中
+  情况二：我们安装的插件是基于webpack处理的，也就是需要把安装的模块配置到webpack中（重新修改webpack配置项了）
+    =>首先需要把隐藏到node_modules中的配置项暴露到项目中
+    > $ yarn eject
+
+    首先会提示确认是否执行eject操作，这个操作是不可逆转的，一但暴露出来配置项，就无法在隐藏回去了
+
+    如果当前的项目基于GIT管理，在执行eject的时候，如果还有没有提交到历史的区的内容，需要先提交到历史区，然后在eject才可以，否则报错：This git repository has untracked files or uncommitted changes...
+
     =>再去修改对应的配置项即可
+      一但暴露后，项目目录中多了两个文件夹：
+        config  存放的是webpack的配置文件
+           webpack.config.dev.js  开发环境下的配置项（yarn start）
+           webpack.config.prod.js  生产环境下的配置项（yarn build）
+
+        scripts 存放的是可执行脚本的JS文件
+           start.js   yarn start执行的就是这个JS
+           build.js   yarn build执行的就是这个JS
+
+      package.json中的内容也改了
+
+      【举个栗子：需要配置LESS】
+          $ yarn add less less-loader
+
+          less是开发和成产环境下都需要配置的
+
+          ```
+            {
+                test: /\.(css|less)$/,
+                use: [
+                    require.resolve('style-loader'),
+                    ...
+                    {
+                        loader: require.resolve('less-loader')
+                    }
+                ],
+            },
+          ```
+
+   我们预览项目的时候，也是先基于webpack编译，把编译后的内容放到浏览器中运行，所以如果项目中使用了less，我们需要修改webpack配置项，在配置项中加入less的编译工作，这样后期预览项目，首先基于webpack把less编译为css，然后在呈现在页面中.
+
+
+   $ set HTTPS=true&&npm start   开启HTTPS协议模式（设置环境变量HTTPS的值）
+   $ set PORT=63341   修改端口号
+
+
+====================================
+
+二. react & react-dom
+
+  【渐进式框架】
+     一种最流行的框架设计思想，一般框架中都包含很多内容，这样导致框架的体积过于臃肿，拖慢加载的速度。真实项目中，我们使用一个框架，不一定用到所有的功能，此时我们应该把框架的功能进行拆分，用户想用什么，让其自己自由组合即可。
+
+     全家桶：渐进式框架N多部分的组合
+
+     VUE全家桶：vue-cli/vue/vue-router/vuex/axios(fetch)/vue element(vant)
+     REACT全家桶：create-react-app/react/react-dom/react-router/redux/react-redux/axios/ant/dva/saga/mobx...
+
+
+  1. react：REACT框架的核心部分，提供了Component类可以供我们进行组件开发，提供了钩子函数（生命周期函数：所有的生命周期函数都是基于回调函数完成的）
+
+  2. react-dom：把JSX语法（REACT独有的语法）渲染为真实DOM（能够放到页面中展示的结构都叫做真实的DOM）的组件
+
+=========================== 
