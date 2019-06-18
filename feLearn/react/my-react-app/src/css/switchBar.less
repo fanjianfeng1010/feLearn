@@ -1,0 +1,41 @@
+.container {
+  box-sizing: border-box;
+  width: 500px;
+  height: 500px;
+  background-color: #12ddff;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  border: 1px solid #fff;
+
+  li {
+    width: 80px;
+    height: 50px;
+    border: 1px solid #fff;
+
+    &.active {
+      background: red;
+    }
+
+    &.item {
+      border-radius: 5px;
+    }
+  }
+}
+
+.container div {
+  box-sizing: border-box;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+
+  &.active {
+    display: block;
+    border: 1px solid #121414;
+  }
+}

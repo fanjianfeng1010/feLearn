@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    ul{
+      list-style: none;
+    }
+    .container {
+      box-sizing: border-box;
+      width: 500px;
+      height: 500px;
+      background-color: #12ddff;
+    }
+
+    .wrapper {
+      box-sizing: border-box;
+      display: flex;
+      flex-flow:row nowrap;
+      justify-content: flex-start;
+      border: 1px solid #fff;
+    }
+
+    .wrapper li {
+      width: 80px;
+      height: 50px;
+      border: 1px solid #fff;
+    }
+
+    .wrapper li.active {
+      background: red;
+    }
+
+    .container div {
+      box-sizing: border-box;
+      display: none;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      
+    }
+
+    .container div.active {
+      display: block;
+      border: 1px solid #121414;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul class="wrapper">
+      <li class="item active">新闻</li>
+      <li class="item">音乐</li>
+      <li class="item">bbb</li>
+    </ul>
+    <div class="active news">这是新闻啊</div>
+    <div class=" music">这是音乐啊</div>
+    <div class=" bbb">这是bbb啊</div>
+  </div>
+</body>
+
+</html>
