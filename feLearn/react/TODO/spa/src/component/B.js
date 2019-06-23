@@ -7,7 +7,7 @@ class B extends Component {
   }
   render() {
     return (<section>
-      B
+      我是 B 组件
     </section>);
   }
 }

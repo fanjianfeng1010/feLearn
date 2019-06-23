@@ -1,20 +1,49 @@
 import React from 'react';
 import ReactDOM, { render } from 'react-dom';
-import { HashRouter, Route } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import A from './component/A';
 import B from './component/B';
 import C from './component/C';
 
-ReactDOM.render(
+render(
   <HashRouter>
-    <div>
-      <Route path='/' component={A}></Route>
+    <Switch>
+      <Route path='/' exact component={A}></Route>
       <Route path='/user' component={B}></Route>
       <Route path='/pay' component={C}></Route>
-    </div>
 
-  </HashRouter>, document.getElementById('root'));
+      {/**上述都设置完成后,会在末尾设置一个匹配:以上都不符合的情况下,我们认为路由地址是非法的地址
+      我们做一些特殊处理 
+      <Route render={
+        () => {
+          return (<div>非法路径</div>)
+        }
+      }></Route>*/}
+
+      {/**
+        也可以基于 redirect 进行重定向
+        TO [string]: 重新丁香到新的地址
+        to [object]: 重新定向到新的地址,只不过指定类更多的信息
+          {
+            pathname:定向的地址
+            search:给定向的地址问号传参(结合当前案例,真实项目中,我们有时候会根据是否存在问号穿C口数值统计是正常进入首页
+            还是非正常跳转过来的,也有可能根据问号传参值做不同的事情)
+            state:给定向后的组件传递一些信息
+          }
+          push:如果设置了这个属性,当前跳转的地址会加入到 history stack 中一条记录
+          from:设定当前来源的页面地址
+          <Redirect from='/custom' to '/custom/list />
+          如果当前请求的 hash 地址是 custom,我们让其重定向到 custom/list 中
+       */}
+      <Redirect to={{
+        pathname: '/',
+        search: '?lx=404'
+      }
+      }></Redirect>
+    </Switch>
+
+  </HashRouter >, document.getElementById('root'));
 
 /**
  * 单页应用(SPA)
@@ -71,5 +100,8 @@ ReactDOM.render(
  *  component:一旦哈希值和当前 route的 path 相同了,则渲染 component 指定的组件
  *  exact:让 path 的匹配严谨和严格一些(只有 URL 哈希值和 path 设定的值相等才可以匹配到)
  *  render:当前页面的哈希地址和 path 匹配,会把 render 规划的方法执行,在方法中一般做"权限校验"(渲染组件之前验证是否存在权限,不存在做一些特殊处理)
+ *
+ *  默认情况下,会和每一个 route 都做校验(哪怕之前已经有校验成功的),switch 组件可以解决这个问题,和 switch case 一样,只要
+ * 有一种情况校验成功,就不再向后校验了
  */
 
