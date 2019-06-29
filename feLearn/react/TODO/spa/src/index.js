@@ -10,6 +10,7 @@ import Custom from './routes/Custom';
 import Plan from './routes/Plan';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './static/common.css'
 
 
 

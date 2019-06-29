@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 
 /*
 * Link:是 react-router 中提供的路由切换组件,基于它可以实现点击的时候路由的切换
@@ -27,11 +27,37 @@ import { Link, NavLink } from 'react-router-dom';
       <NavLink to='/custom' /> 最后也会转换为 A 标签,如果当前页面的 hash 地址和此组件中的 TO 地址匹配了
         则会给渲染后的 A 标签设置默认的样式类:active
     
+        WithRouter: 这个方法的意思是吧一个非路由管控的组件模拟成为路由管控的组件
+
+        受路由管控组件的一些特点:
+          1: 只有当前页面哈希地址和路由指定的地址匹配才会把对应的组件渲染
+          ( WithRouter:是没有地址匹配都会模拟成为受路由管控的)
+          2: 路由切换的原理:凡是匹配的路由,都会把对应组件内容重新添加到页面中,相反,不匹配的都会在页面中移除掉,下一次重新匹配上
+          ,组件需要重新渲染到页面中,每一次路由切换的时候,页面的哈希路由地址改变,都会从一级路由重新校验一遍
+          3: 所有受路由管控的组件,在组件中的属性 props 上都默认添加了三个属性:
+            history
+              push
+              go 
+              go-back
+              go-forward
+
+            location 获取当前哈希路由渲染组件的一些信息
+              pathname:当前哈希路由地址 /custom/list
+              search:当前页面的问号传参值 ?lx=unsafe
+              state:基于 redirect/link/navLink 中的 TO,传递的是一个对象,对象中编写的 state,就可以在 location.state 中获取到
+
+            match 获取的是当前路由匹配的一些结果
+              params:如果当前路由匹配的是地址路径参数,则这里可以获取传递参数的值
+
 */
 
 class Nav extends Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      count: 1
+    }
+    console.log(props);
   }
   render() {
     return (<div className='navbar navbar-default'>
@@ -44,14 +70,23 @@ class Nav extends Component {
       </div>
       {/* NAV */}
       <div className="collapse navbar-collapse col-md-10">
-        <ul className="nav navbar-nav">
-          <li><NavLink exact to='/'>首页</NavLink></li>
+        <ul className="nav navbar-nav" onClick={this.handleClick}>
+          {/*NavLink 不是点击谁,谁有选中样式(但是可以路由切换),而是当前页面哈希后的地址和 navLink中的 to 进行比较,哪个匹配了,哪个才有选中的样式 */}
+          <li><NavLink exact to='/' >首页</NavLink></li>
           <li><NavLink to='/custom'>客户管理</NavLink></li>
           <li><NavLink to='/plan'>计划管理</NavLink></li>
         </ul>
       </div>
     </div>);
   }
+
+  handleClick = ev => {
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
 }
 
-export default connect()(Nav);
+export default connect()(withRouter(Nav));
+
+//export default withRouter(connect()(Nav))

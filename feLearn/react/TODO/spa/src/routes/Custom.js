@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, NavLink, Link } from 'react-router-dom';
 
 import List from './custom/List';
 import Create from './custom/Create';
@@ -15,8 +15,8 @@ class Custom extends Component {
     return (<section>
       {/* 左侧 menu 导航 */}
       <ul className="nav nav-pills nav-stacked col-md-2">
-        <li className="presentation"><a href="javascript:;">客户列表</a></li>
-        <li className="presentation"><a href="javascript:;">客增加客户信息</a></li>
+        <li className="presentation"><NavLink to='/custom/list'>客户列表</NavLink></li>
+        <li className="presentation"><NavLink to='/custom/create'>客增加客户信息</NavLink></li>
       </ul>
       {/* 右侧内容管理,也是基于路由管理(二级路由 )*/}
       <div className="col-md-10">
@@ -24,7 +24,7 @@ class Custom extends Component {
           {/* <Route path='/custom' exact component={List} /> */}
           <Route path='/custom/list' component={List} />
           <Route path='/custom/create' component={Create} />
-          <Route path='/custom/Detail' component={Detail} />
+          <Route path='/custom/Detail/:id' component={Detail} />
           {/* 进入到客户管理页面,我们让其默认展示就是 List 区域内容 上述默认指定渲染组件的操作也可以,这种重定向的方式也可以*/}
           <Redirect from='custom' to='/custom/list' />
         </Switch>
